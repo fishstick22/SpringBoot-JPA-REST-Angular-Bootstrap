@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<title>Spring MVC 4 REST + AngularJS + Bootstrap</title>
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" type="text/css" href="/resources/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="/resources/css/style.css" />
+
+<script src="/resources/js/lib/jquery-3.1.1.min.js"></script>
+<script src="/resources/js/lib/bootstrap.min.js"></script>
+<script src="/resources/js/lib/angular.min.js"></script>
+<script src="/resources/js/lib/angular-resource.min.js"></script>
+<script src="/resources/js/app.js"></script>
+
+</head>
+<body ng-app="myApp">
+	<div ng-controller="PersonController as personCtrl">
+		<div class="container">
+			<h3>Spring MVC 4 REST + AngularJS + Bootstrap (grid layout)</h3>
+			<form name="personForm" method="POST">
+				
+				<div class="row">
+					<div class="col-sm-4 col-sm-offset-1">
+						<div ng-if="personCtrl.flag != 'edit'">
+							<h4>Add New Person</h4>
+						</div>
+						<div ng-if="personCtrl.flag == 'edit'">
+							<h4>Update Person for ID: {{ personCtrl.person.pid }}</h4>
+						</div>
+					</div>
+				</div> <!-- end row -->
+
+				<div class="row">
+					<div class="col-sm-2"><p>Name:</p></div>
+					<div class="col-sm-4">
+						<input type="text" name="name"
+							ng-model="personCtrl.person.name" required />
+					</div>
+					<div class="col-sm-6">					 
+						<span
+							ng-show="personForm.name.$error.required" class="msg-val">
+							Name is required.</span>
+					</div>
+				</div> <!-- end row -->
+
+				<div class="row">
+					<div class="col-sm-2"><p>Location:</p></div>
+					<div class="col-sm-4">				
+						<input type="text" name="location"
+							ng-model="personCtrl.person.location" required /> 
+					</div>
+					<div class="col-sm-6">						
+						<span
+							ng-show="personForm.location.$error.required" class="msg-val">
+							Location is required.</span>
+					</div>
+				</div> <!-- end row -->
+				
+				<div class="row">
+					<div class="col-sm-5 col-sm-offset-1">
+
+						<div 
+							ng-if="personCtrl.flag != 'edit'">
+							<input type="submit" 
+								ng-click="personCtrl.addPerson()"
+								value="Add Person" /> 
+							<input type="button"
+								ng-click="personCtrl.reset()" 
+								value="Reset" />
+						</div>
+						
+						<div 
+							ng-if="personCtrl.flag == 'edit'">
+							<input type="submit" 
+								ng-click="personCtrl.updatePersonDetail()"
+								value="Update Person" /> 
+							<input type="button" 
+								ng-click="personCtrl.cancelUpdate()" 
+								value="Cancel" />
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<span 
+							ng-if="personCtrl.flag=='created'"
+							class="msg-success">Person successfully added.</span> 
+						<span
+							ng-if="personCtrl.flag=='failed'" 
+							class="msg-val">Person already exists.</span>
+						<span
+							ng-if="personCtrl.flag=='updated'"
+							class="msg-success">Person successfully updated.</span>						
+						<span 
+							ng-if="personCtrl.flag=='deleted'"
+							class="msg-success">Person successfully deleted.</span>
+					</div>
+				</div> <!-- end row -->
+			</form>
+		
+			<div class="row">
+				<div class="col-sm-8 col-sm-offset-1"><hr/></div>
+			</div>
+			
+			<div class="row">		
+				<div class="col-sm-1"><p>ID</p></div>
+				<div class="col-sm-2"><p>Name</p></div>
+				<div class="col-sm-2"><p>Location</p></div>
+				<div class="col-sm-3"><p>Actions</p></div>
+				<div class="col-sm-4"></div>
+			</div> <!-- end row -->
+					
+			<span ng-repeat="row in personCtrl.persons">
+				<div class="row">
+					<div class="col-sm-1"><span ng-bind="row.pid"></span></div>
+					<div class="col-sm-2"><span ng-bind="row.name"></span></div>
+					<div class="col-sm-2"><span ng-bind="row.location"></span></div>
+					<div class="col-sm-3">
+						<input type="button"
+							ng-click="personCtrl.deletePerson(row.pid)" 
+							value="Delete" /> 
+						<input type="button" 
+							ng-click="personCtrl.editPerson(row.pid)"
+							value="Edit" /> 
+
+					</div>
+					<div class="col-sm-4">
+						<span
+							ng-if="personCtrl.flag=='updated' && row.pid==personCtrl.updatedId"
+							class="msg-success">&lt;-- successfully updated.</span>
+					</div>					
+				</div> <!-- end row -->					
+			</span>
+
+		</div> <!-- end bootstrap container> -->
+	</div> <!-- end angular ng-controller -->
+
+</body>
+</html>
